@@ -1,4 +1,4 @@
-
+//useless comment
 public interface Course {
 
 	public String getPlace();
