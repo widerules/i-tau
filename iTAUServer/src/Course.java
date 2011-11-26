@@ -1,5 +1,6 @@
 //useless comment returns! 
 // another one
+// waddup?
 public interface Course {
 
 	public String getPlace();
