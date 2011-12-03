@@ -1,7 +1,7 @@
 import java.awt.Image;
 import java.util.List;
 
-public class TauStudent implements Student {
+public class TauStudent implements IStudent {
 	
 	private int isFree;
 	private String name;
@@ -74,10 +74,10 @@ public class TauStudent implements Student {
 		return this.password;
 	}
 	
-	public void addFriend(Student student) {
+	public void addFriend(IStudent student) {
 		this.friends_list.add((TauStudent) student);
 	}
-	public void removeFriend(Student student) {
+	public void removeFriend(IStudent student) {
 		this.friends_list.remove(student);
 	}
 }

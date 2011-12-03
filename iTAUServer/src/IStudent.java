@@ -1,7 +1,7 @@
 import java.awt.Image;
 
 
-public interface Student {
+public interface IStudent {
 	
 	/* int because may be free but 'taken' by other person/activity */
 	public int isFree();
@@ -18,7 +18,7 @@ public interface Student {
 	public int getYear();
 	public void setPassword(String password);
 	public String getPassword();
-	public void addFriend(Student student);
-	public void removeFriend(Student student);
+	public void addFriend(IStudent student);
+	public void removeFriend(IStudent student);
 
 }
