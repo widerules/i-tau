@@ -25,4 +25,7 @@ public class Lesson {
 	public Day getDay(){
 		return lessDay;
 	}
+	public String getPlace(){
+		
+	}
 }
