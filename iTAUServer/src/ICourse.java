@@ -3,7 +3,7 @@
 // waddup?
 public interface ICourse {
 
-	public String getPlace();
+
 	public String getLecture();
 	public Lesson[] getLessonTimes();
 	public Date getMoedADate();

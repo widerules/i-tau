@@ -5,9 +5,6 @@ public class TauCourse implements ICourse{
 		
 	}
 
-	public String getPlace(){
-		
-	}
 	public String getLecture(){
 		
 	}
