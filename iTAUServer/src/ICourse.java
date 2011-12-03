@@ -9,4 +9,5 @@ public interface ICourse {
 	public Date getMoedADate();
 	public Date getMoedBDate();
 	public String getID();
+	public String getSemester();
 }
