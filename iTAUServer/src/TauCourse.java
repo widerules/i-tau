@@ -1,5 +1,5 @@
 
-public class TauCourse implements Course{
+public class TauCourse implements ICourse{
 	private
 	public TauCourse(){
 		
@@ -18,6 +18,9 @@ public class TauCourse implements Course{
 		
 	}
 	public Date getMoedBDate(){
+		
+	}
+	public String getID(){
 		
 	}
 }
