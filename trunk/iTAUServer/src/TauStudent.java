@@ -18,6 +18,10 @@ public class TauStudent implements IStudent {
 		this.faculty = faculty;
 		this.name = name;
 		this.year = year;
+		// need to define a default picture
+		if (picture == null) {
+			// picture = 
+		}
 		this.picture = picture;
 	}
 	

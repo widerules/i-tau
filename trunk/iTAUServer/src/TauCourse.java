@@ -1,6 +1,6 @@
 
 public class TauCourse implements ICourse{
-	private
+
 	public TauCourse(){
 		
 	}
