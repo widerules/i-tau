@@ -1,3 +1,6 @@
+package com.google.code.iTau;
+
+
 import java.util.HashMap;
 
 
@@ -13,18 +16,20 @@ public class Course_DB {
 		if (!this.isCourseExist(course)){
 			String courseID = course.getID();
 			String semester = course.getSemester();
-			this.course_hash.put(courseID, new map)
+			//this.course_hash.put(courseID, new map)
 		}
 	}
 	
+
+
 	public boolean isCourseExist(ICourse course){
 		String courseID = course.getID();
 		String semester = course.getSemester();
 		if (this.course_hash.containsKey(courseID)){
-			return true;
-		} else {
-			return false;
+			if (this.course_hash.get(courseID).get(semester) != null){
+				return true;
+			}
 		}
+		return false;
 	}
-
 }
