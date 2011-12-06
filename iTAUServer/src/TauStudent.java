@@ -1,33 +1,51 @@
-import java.awt.Image;
-import java.util.List;
+package com.google.code.iTau;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.TreeSet;
 
+import javax.jdo.annotations.PersistenceCapable;  
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
+
+@PersistenceCapable
 public class TauStudent implements IStudent {
 	
+	@PrimaryKey
+	@Persistent
+	private String facebookID;
+	@Persistent
+	private String accessToken;
+	@Persistent
 	private int isFree;
+	@Persistent
 	private String name;
-	private String userName;
-	private String password;
+	@Persistent
 	private String faculty;
-	private int year;
-	private Image picture;
-	private List<TauStudent> friends_list;
+	@Persistent
+	private int year; 
+	@Persistent
+	private Set<String> courseIDList;
 	
-	public TauStudent(String userName, String password, String name, String faculty, int year, Image picture) {
-		this.userName = userName;
-		this.password = password;
+	public TauStudent(String facebookID, String accessToken, String name, String faculty, int year, String courseIDList) {
 		this.faculty = faculty;
 		this.name = name;
 		this.year = year;
-		// need to define a default picture
-		if (picture == null) {
-			// picture = 
-		}
-		this.picture = picture;
+		this.courseIDList = new TreeSet<String>(Arrays.asList(courseIDList.split(" ")));
+		this.accessToken = accessToken;
+		//str_to_time_table(timeTableStr, timeTable);
 	}
+	
+	//private void str_to_time_table(String timeTableStr, HashMap<String, String> timeTable) {
+		//TODO: decide a format in which will come and parse it
+	//}
 	
 	public int isFree() {
 		return this.isFree;
 	}
+	
+	//public int isFriendFree(IStudent friend) {
+		//return friend.isFree();
+	//}
 	
 	/* 0 - free
 	 * 1 - free but 'taken'
@@ -41,17 +59,17 @@ public class TauStudent implements IStudent {
 		}
 		this.isFree = free_type;
 	}
+	public String getFacebookID() {
+		return this.facebookID;
+	}
+	public String getAccessToken() {
+		return this.accessToken;
+	}
 	public String getName() {
 		return this.name;
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	public String getUserName() {
-		return this.userName;
-	}
-	public void setUserName(String userName) {
-		this.userName = userName;
 	}
 	public String getFaculty() {
 		return this.faculty;
@@ -59,29 +77,27 @@ public class TauStudent implements IStudent {
 	public void setFaculty(String faculty) {
 		this.faculty = faculty;
 	}
-	public Image getImage() {
-		return this.picture;
-	}
-	public void setImage(Image picture) {
-		this.picture = picture;
-	}
 	public int getYear() {
 		return this.year;
 	}
 	public void setYear(int year) {
 		this.year = year;
 	}
-	public void setPassword(String password) {
-		this.password = password;
+	public Set<String> getCourseIDList() {
+		return this.courseIDList;
 	}
-	public String getPassword() {
-		return this.password;
+	public void addCourseID(String courseID) {
+		if (!this.isTakeCourse(courseID)) {
+			this.courseIDList.add(courseID);
+		}
+	}
+	public void removeCourseID(String courseID) {
+		if (this.isTakeCourse(courseID)) {
+			this.courseIDList.remove(courseID);
+		}
+	}
+	public boolean isTakeCourse(String courseID) {
+		return this.courseIDList.contains(courseID);
 	}
 	
-	public void addFriend(IStudent student) {
-		this.friends_list.add((TauStudent) student);
-	}
-	public void removeFriend(IStudent student) {
-		this.friends_list.remove(student);
-	}
 }

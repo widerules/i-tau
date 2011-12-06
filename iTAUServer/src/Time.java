@@ -1,3 +1,4 @@
+package com.google.code.iTau;
 
 public class Time {
 	private int hours,minutes;

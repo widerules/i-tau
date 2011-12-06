@@ -1,5 +1,12 @@
+package com.google.code.iTau;
 
-public class Lesson {
+/*
+ * this class expresses a session of a course
+ * example : the course descrete math is taught 
+ * on sunday 10-12 and on monday 12-14.
+ * each one of those is called a lesson.
+ */
+public class Lesson implements ILesson {
 	
 	
 	public enum Day {
@@ -26,6 +33,6 @@ public class Lesson {
 		return lessDay;
 	}
 	public String getPlace(){
-		
+		return "";
 	}
 }
