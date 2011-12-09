@@ -1,0 +1,2 @@
+serviceClass: com.google.itau.client.GreetingService
+path: B53B1AE0AFBEB2DF793829BFEDC87C2A.gwt.rpc
