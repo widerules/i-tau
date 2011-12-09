@@ -49,7 +49,7 @@ public class ExtendedFaceBookClient extends DefaultFacebookClient {
 	 * @return An OAuth access token
 	 * @throws FacebookException
 	 */
-	private OAuth exchangeSession(String session) throws FacebookException {
+	public OAuth exchangeSession(String session) throws FacebookException {
 		verifyParameterPresence("session", session);
 		
      
@@ -74,7 +74,35 @@ public class ExtendedFaceBookClient extends DefaultFacebookClient {
 		 * @return An OAuth access token
 		 * @throws FacebookException
 		 */
-		private String exchangeCode(String code, String redirect_uri) throws FacebookException {
+	
+		
+		public String bla(String code, String redirect_uri) {
+		    try
+		    {
+			//Facebook returns "access_code=XXX"
+			//This function returns XXX
+			String fb_accessTokenSeq = "access_token=";
+			
+			verifyParameterPresence("code", code);
+			verifyParameterPresence("redirect_uri", redirect_uri);
+			
+			String response = makeRequest(ACCESS_TOKEN_OBJECT, false, true, false, null, Parameter.with("client_id", this.APP_ID),
+																						 Parameter.with("client_secret", this.APP_SECRET),
+																						 Parameter.with("redirect_uri", redirect_uri),
+																						 Parameter.with("code", code));
+		    
+		    if (response != null & response.startsWith(fb_accessTokenSeq)){
+		    	return response.substring(fb_accessTokenSeq.length());
+		    }
+		    else
+		    	return null;
+		    }
+		    catch(FacebookException e) {}
+			return null;
+		    
+		  }
+		
+		public String exchangeCode(String code, String redirect_uri) throws FacebookException {
 		    
 			//Facebook returns "access_code=XXX"
 			//This function returns XXX
