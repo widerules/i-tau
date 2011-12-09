@@ -1,4 +1,5 @@
 <%@ page import="com.restfb.*" %>
+<%@ page import="com.restfb.types.*" %>
 <%@ page import="com.google.itau.client.SessionManager" %>
 
 <!doctype html>
@@ -35,7 +36,27 @@
   <!-- to create a completely dynamic UI.        -->
   <!--                                           -->
   <body>
-
+  	<%
+  		SessionManager httpSession = new SessionManager(request, response);
+  		
+  		String APP_ID = System.getProperty("APP_ID");
+  		String APP_SECRET = System.getProperty("APP_SECRET_CODE");
+  		String CANVAS_APP_URL = System.getProperty("CANVAS_APP_URL");
+  		String code = request.getParameter("code");
+  		ExtendedFaceBookClient t;
+  		
+  		String at;
+  		//String url = "https://graph.facebook.com/oauth/access_token?client_id=289095354463141&redirect_uri=http://apps.facebook.com/itau_application/homepage.jsp&client_secret=" + code;
+  		String url = "https://graph.facebook.com/oauth/access_token?";
+  		url += "client_id=" + APP_ID;
+  		url += "&redirect_uri=" + CANVAS_APP_URL + "homepage.jsp";
+  		url += "&client_secret=" + APP_SECRET;
+  		url += "&code=" + code;
+  		
+  		t = new ExtendedFaceBookClient(APP_ID, APP_SECRET);
+  		at = t.bla(code, CANVAS_APP_URL + "homepage.jsp");
+  
+  	%>
     <!-- OPTIONAL: include this if you want history support -->
     <iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position:absolute;width:0;height:0;border:0"></iframe>
     
@@ -46,34 +67,12 @@
         in order for this application to display correctly.
       </div>
     </noscript>
-    
-    <%
-    
-		//String APP_ID = System.getProperty("APP_ID");
-		//String APP_SECRET = System.getProperty("APP_SECRET");
-		//String CANVAS_APP_URL = System.getProperty("CANVAS_APP_URL");
-		//String code = request.getParameter("code");
-			
-		//SessionManager httpSession = new SessionManager(request, response);
-		//ExtendedFaceBookClient fbclient = new ExtendedFaceBookClient(APP_ID, APP_SECRET);
-		//Parameter scope = Parameter.with("scope", SCOPE);
-		 top.location = "<%= "https://graph.facebook.com/oauth/access_token?client_id=289095354463141&redirect_uri=http://apps.facebook.com/itau_application/homepage.jsp&client_secret=d66e6579629895f958012fd28f41e1d0&code=AQANEF0csVF83deqjBe7fYwNEJaOfowBh8OTaqfE4Dwti6TnqVLYbIjaZ6yvKsHg2VbZXch57eqR-Cg10cyW6BgatbiK0qloS71JE3fI-SFOcJPjPKh-787YMXjP_aO-X441dxJQ4teUtE2lLRYQ2KS20pITm1hyA87fkdwCfy4l_Y8dbHgzKpgvo-XHUY_UN5A#_=_" %>";
-		if(fbclient.getAccessToken() == null)
-		{
-				
-	%>
-				String customer_code = request.getParamater("code");
-				<script type="text/javascript">
-			       // top.location = "<%= "https://graph.facebook.com/oauth/access_token?client_id=289095354463141&redirect_uri=http://apps.facebook.com/itau_application/homepage.jsp&client_secret=d66e6579629895f958012fd28f41e1d0&code=AQANEF0csVF83deqjBe7fYwNEJaOfowBh8OTaqfE4Dwti6TnqVLYbIjaZ6yvKsHg2VbZXch57eqR-Cg10cyW6BgatbiK0qloS71JE3fI-SFOcJPjPKh-787YMXjP_aO-X441dxJQ4teUtE2lLRYQ2KS20pITm1hyA87fkdwCfy4l_Y8dbHgzKpgvo-XHUY_UN5A#_=_" %>";
-			 	</script>
-	<%
-		}
-		else
-		{
-	%>
-		<h1>WAAZZZZZZUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU</h1>
-	<%
-		}
-	%>
+    	Access token: <%= at %>
+		<script type="text/javascript">
+			 //top.location =  "<%= url %>";
+			 //top.location =  "https://graph.facebook.com/oauth/access_token?client_id=289095354463141&redirect_uri=http://apps.facebook.com/itau_application/homepage.jsp&client_secret=d66e6579629895f958012fd28f41e1d0&code=AQDOMXcDC4Rac04ylh1ndYbEIqrFad3rQ0XDui3P5KMPOA9yGVGlDja3ooJP2Gv29uqyEDuc2a-IW019kOheLCIWlViTSuobFa2hK14BMyOWT3L5JRbWaMj_rdZEFOVcoXAjAX1RtLiF2mKmexdr1HSRIG1H7ePv9pu1kH9tONKJwo7cZTrsj6eHDycnhyQ1_mA";
+		</script>
+		 
 	</body>
+	
 </html>
