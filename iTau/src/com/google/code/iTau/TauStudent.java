@@ -16,7 +16,7 @@ public class TauStudent implements IStudent {
 	@Persistent
 	private String accessToken;
 	@Persistent
-	private int isFree;
+	private int isFree = 0;
 	@Persistent
 	private String name;
 	@Persistent
@@ -32,6 +32,7 @@ public class TauStudent implements IStudent {
 		this.year = year;
 		this.courseIDList = new TreeSet<String>(Arrays.asList(courseIDList.split(" ")));
 		this.accessToken = accessToken;
+		this.facebookID = facebookID;
 		//str_to_time_table(timeTableStr, timeTable);
 	}
 	
