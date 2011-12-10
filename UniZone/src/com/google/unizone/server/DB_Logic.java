@@ -38,7 +38,8 @@ public class DB_Logic {
 		return SheduleArray;
 	}
 	
-	public String  scheduleToString (IShiur[][]  scheduleArray ) {
+	public String  scheduleToString (IStudent student) {
+		IShiur[][] scheduleArray  =scheduleToArray(student);
 		String output = "";
 		String iShiurName = "";
 		int columnWidth = 20;
