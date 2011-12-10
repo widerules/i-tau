@@ -7,10 +7,11 @@ public interface IStudent {
 	
 	/* int because may be free but 'taken' by other person/activity */
 	public int isFree();
-	//public int isFriendFree(IStudent friend);
 	public void setFree(int free_type) throws Exception;
 	public String getName();
 	public void setName(String name);
+	public String getPic();
+	public void setPic(String url);
 	public String getFaculty();
 	public void setFaculty(String faculty);
 	public void setYear(int year);

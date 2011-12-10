@@ -5,8 +5,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import javax.jdo.PersistenceManager;
-
 import com.google.unizone.server.ILesson;
+
+
+
 
 
 public class DB_Logic {
@@ -211,6 +213,23 @@ public class DB_Logic {
                 @SuppressWarnings("unchecked")
                 List<ICourse> course = (List<ICourse>) pm.newQuery(query).execute();
                 if (course.size() > 0){
+                        return true;
+                }
+        }
+        finally{
+                pm.close();
+        }
+        return false;
+    }
+    
+    public static Boolean checkIfStudentExist(String id) {
+        PersistenceManager pm = PMF.get().getPersistenceManager();
+        //List<Customer> customer = new LinkedList<Customer>();
+        String query= "select from " + IStudent.class.getName() + " where id == '" + id +"'";
+        try{
+                @SuppressWarnings("unchecked")
+                List<IStudent> student = (List<IStudent>) pm.newQuery(query).execute();
+                if (student.size() > 0){
                         return true;
                 }
         }

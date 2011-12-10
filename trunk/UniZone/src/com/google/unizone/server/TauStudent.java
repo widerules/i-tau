@@ -16,6 +16,8 @@ public class TauStudent implements IStudent {
 	@Persistent
 	private String accessToken;
 	@Persistent
+	private String picUrl;
+	@Persistent
 	private int isFree = 0;
 	@Persistent
 	private String name;
@@ -26,13 +28,14 @@ public class TauStudent implements IStudent {
 	@Persistent
 	private Set<String> courseIDList;
 	
-	public TauStudent(String facebookID, String accessToken, String name, String faculty, int year, String courseIDList) {
+	public TauStudent(String facebookID, String accessToken, String picUrl, String name, String faculty, int year, String courseIDList) {
 		this.faculty = faculty;
 		this.name = name;
 		this.year = year;
 		this.courseIDList = new TreeSet<String>(Arrays.asList(courseIDList.split(" ")));
 		this.accessToken = accessToken;
 		this.facebookID = facebookID;
+		this.picUrl = picUrl;
 		//str_to_time_table(timeTableStr, timeTable);
 	}
 	
@@ -100,5 +103,10 @@ public class TauStudent implements IStudent {
 	public boolean isTakeCourse(String courseID) {
 		return this.courseIDList.contains(courseID);
 	}
-	
+	public String getPic() {
+		return this.picUrl;
+	}
+	public void setPic(String url) {
+		this.picUrl = url;
+	}
 }
