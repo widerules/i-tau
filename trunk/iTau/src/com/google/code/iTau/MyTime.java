@@ -1,7 +1,10 @@
 package com.google.code.iTau;
+import javax.jdo.annotations.EmbeddedOnly;
+import javax.jdo.annotations.Persistent;
 
-
+@EmbeddedOnly
 public class MyTime {
+	@Persistent
 	private int hours,minutes;
 	//private String hoursStr,minutesStr;
 	

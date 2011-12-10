@@ -28,9 +28,17 @@ public class DB_Logic {
 	}
 	
 	public static void storeToDB(Object object) {
-		PersistenceManager pm = PMF.get().getPersistenceManager();
+			PersistenceManager pm = PMF.get().getPersistenceManager();
+
 		try {
 			pm.makePersistent(object);
+		} catch(Exception e) {
+			if (pm == null) {
+				System.out.println("HERE");
+			} else {
+				System.out.println(pm.toString());
+			}
+			System.out.println(e.getMessage() + e.getClass().toString());
 		} finally {
 			pm.close();
 		}
@@ -67,9 +75,9 @@ public class DB_Logic {
      * getStudent
      * @return Student whose id equals a given id. 
      */
-    public static IStudent getStudent(String id) {
+    public static IStudent getStudent(String id) {      
             PersistenceManager pm = PMF.get().getPersistenceManager();
-            //List<Customer> customer = new LinkedList<Customer>();
+            //List<Customer> customer = new LinkedList<Customer>();  
             IStudent s = null;
             String query= "select from " + IStudent.class.getName() + " where id == '" + id +"'";
             try{

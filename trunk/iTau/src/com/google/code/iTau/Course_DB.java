@@ -2,34 +2,47 @@ package com.google.code.iTau;
 
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 
 public class Course_DB {
 	
-	private HashMap<String, HashMap<String, ICourse>> course_hash;
+	private static HashMap<String, ICourse> course_hash = new HashMap<String, ICourse>();
+	private static HashMap<String, IStudent> student_hash = new HashMap<String, IStudent>();
 	
-	public Course_DB(){
-		this.course_hash = new HashMap<String, HashMap<String, ICourse>>();
+	
+	public static void createCourse(ICourse course) {
+		course_hash.put(course.getID(), course);
+	}
+	public static void createStudent(IStudent student) {
+		student_hash.put(student.getFacebookID(), student);
 	}
 	
-	public void update(ICourse course){
-		if (!this.isCourseExist(course)){
-			//String courseID = course.getID();
-			//String semester = course.getSemester();
-			//this.course_hash.put(courseID, new map)
+	public static ICourse getCourse(String courseID) {
+		return course_hash.get(courseID);
+	}
+	public static IStudent getStudent(String facebookID) {
+		return student_hash.get(facebookID);
+	}
+	public static List<IStudent> getCourseStudents(ICourse course) {
+		Set<String> studetIDs = course.getStudents();
+		List<IStudent> result = new LinkedList<IStudent>();
+		for (String studentID : studetIDs) {
+			IStudent student = getStudent(studentID);
+			result.add(student);
 		}
+		return result;
 	}
-	
-
-
-	public boolean isCourseExist(ICourse course){
-		String courseID = course.getID();
-		String semester = course.getSemester();
-		if (this.course_hash.containsKey(courseID)){
-			if (this.course_hash.get(courseID).get(semester) != null){
-				return true;
-			}
+	public static List<ICourse> getStudentCourses(IStudent student){
+		Set<String> courseIDs = student.getCourseIDList();
+		List<ICourse> result = new LinkedList<ICourse>();
+		for (String courseID : courseIDs) {
+			ICourse course = getCourse(courseID);
+			result.add(course);
 		}
-		return false;
+		return result;
 	}
+
 }

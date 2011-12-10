@@ -1,7 +1,14 @@
 package com.google.code.iTau;
 
+import javax.jdo.annotations.PersistenceCapable;  
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.EmbeddedOnly;
+
+@EmbeddedOnly
 public class MyDate {
+	@Persistent
 	private int day, month, year;
+	@Persistent
 	private MyTime hour;
 	
 	public MyDate(int day, int month, int year, MyTime hour) {
