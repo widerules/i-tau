@@ -21,6 +21,54 @@ public class DB_Logic {
 		}
 	}
 	
+	public IShiur[][]  scheduleToArray (IStudent student) {
+		List<IShiur> schedule = DB_Logic.getSchedule(student);
+		IShiur[][] SheduleArray =  new IShiur[13][7];
+		int day, StartTime, EndTime, Length;
+		for (IShiur iShiur : schedule) {
+			day = iShiur.getDay();
+			StartTime = iShiur.getBeginTime().getHours();
+			EndTime = iShiur.getEndTime().getHours();
+			Length = EndTime - StartTime;
+			for (int i=0;i<Length;i++){
+				SheduleArray[StartTime-7+i][day+1] = iShiur;
+			}
+			
+		}
+		return SheduleArray;
+	}
+	
+	public String  scheduleToString (IShiur[][]  scheduleArray ) {
+		String output = "";
+		String iShiurName = "";
+		int columnWidth = 20;
+		int shiurWidth;
+		int Spaces2Add;
+		for (int i = 0;i<scheduleArray.length;i++){
+			for (int j=0;j<scheduleArray[0].length;j++){
+				if (scheduleArray[i][j] == null){
+					shiurWidth = 0;
+				}
+				else {
+					iShiurName = scheduleArray[i][j].getCourseName();
+					shiurWidth = scheduleArray[i][j].getCourseName().length();
+				}
+				if (shiurWidth > columnWidth){
+					iShiurName = iShiurName.substring(0, columnWidth-1);
+				}
+				else {
+					Spaces2Add = columnWidth - iShiurName.length();
+					output += iShiurName;
+					for (int f=0;f<Spaces2Add;f++){
+						output += " ";
+					}
+				}
+			}
+			System.out.println();
+		}
+		return output;
+	}
+	
 	public static void createCourse(ICourse course) {
 		if (course != null) {
 			storeToDB(course);
@@ -28,6 +76,7 @@ public class DB_Logic {
 			System.out.println("ERROR : (DB_Logic) Attempt to create empty course");
 		}
 	}
+	
 	
 	public static void storeToDB(Object object) {
 			PersistenceManager pm = PMF.get().getPersistenceManager();
