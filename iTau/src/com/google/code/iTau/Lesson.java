@@ -1,4 +1,6 @@
 package com.google.code.iTau;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
 
 /*
  * this class expresses a session of a course
@@ -6,6 +8,8 @@ package com.google.code.iTau;
  * on sunday 10-12 and on monday 12-14.
  * each one of those is called a lesson.
  */
+
+@PersistenceCapable
 public class Lesson implements ILesson {
 	
 	
@@ -13,8 +17,11 @@ public class Lesson implements ILesson {
 	    SUNDAY, MONDAY, TUESDAY, WEDNESDAY, 
 	    THURSDAY, FRIDAY, SATURDAY 
 	}*/
+	@Persistent
 	private MyTime beginTime,endTime;
+	@Persistent
 	private int lessDay;
+	@Persistent
 	private String place;
 	
 	public Lesson(int day,MyTime beginTime,MyTime endTime, String place){
