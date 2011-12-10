@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 //import java.util.TreeSet;
 
 import com.google.unizone.server.TauCourse;
@@ -18,6 +19,23 @@ public class Course_DB {
 	private static HashMap<String, ICourse> course_hash = new HashMap<String, ICourse>();
 	private static HashMap<String, IStudent> student_hash = new HashMap<String, IStudent>();
 	
+	public void startSimulation(){
+		
+		MyTime bTime = new MyTime(10, 10); 
+		MyTime eTime = new MyTime(11, 10);
+		Lesson lesson = new Lesson(1, bTime, eTime, "here"); 
+		MyDate ma = new MyDate(1, 1, 2000);
+		MyDate mb = new MyDate(1, 1, 2000);
+		List<ILesson> lessons = new LinkedList<ILesson>();
+		lessons.add(lesson); 
+		createCourse("tau_1", "modelim", "anna", lessons, ma, mb, "A", new TreeSet<String>());
+		//ICourse bdida = new TauCourse("tau_2", "bdida", "tarsi", null, null, null, "A", new TreeSet<String>());
+		//ICourse infi = new TauCourse("tau_3", "infi", "inna", null, null, null, "A", new TreeSet<String>());
+		
+		createStudent("1", "all","PIC", "tal Gerbi", "cs", 3, "tau_1");
+		
+		
+	}
 	
 	public void createCourse(String courseID, String courseName, String professorName, List<ILesson> lessonTimes, MyDate moedADate, MyDate moedBDate, String semester, Set<String> studentIDList){
 		TauCourse course=new TauCourse(courseID, courseName, professorName, lessonTimes, moedADate, moedBDate, semester, studentIDList);
