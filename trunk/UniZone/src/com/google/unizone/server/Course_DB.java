@@ -1,13 +1,13 @@
 package com.google.unizone.server;
 
 
-import java.util.Arrays;
+//import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
+//import java.util.TreeSet;
 
 import com.google.unizone.server.TauCourse;
 import com.google.unizone.server.TauStudent;
@@ -23,8 +23,8 @@ public class Course_DB {
 		TauCourse course=new TauCourse(courseID, courseName, professorName, lessonTimes, moedADate, moedBDate, semester, studentIDList);
 		course_hash.put(courseID, course);
 	}
-	public void createStudent(String facebookID, String accessToken, String name, String faculty, int year, String courseIDList) {
-		TauStudent stu=new TauStudent(facebookID,accessToken,name,faculty,year,courseIDList);
+	public void createStudent(String facebookID, String accessToken, String picUrl, String name, String faculty, int year, String courseIDList) {
+		TauStudent stu=new TauStudent(facebookID,accessToken,picUrl,name,faculty,year,courseIDList);
 		student_hash.put(facebookID, stu);
 		Set<String> cur=stu.getCourseIDList();
 		for (String s:cur){
@@ -48,7 +48,7 @@ public class Course_DB {
 	public static IStudent getStudent(String facebookID) {
 		return student_hash.get(facebookID);
 	}
-	@SuppressWarnings("unchecked")
+	//@SuppressWarnings("unchecked")
 	public static List<IStudent> getCourseStudents(ICourse course) {
 		Set<String> studetIDs =course.getStudents();
 		List<IStudent> result = new LinkedList<IStudent>();
@@ -58,7 +58,7 @@ public class Course_DB {
 		}
 		return result;
 	}
-	@SuppressWarnings("unchecked")
+	//@SuppressWarnings("unchecked")
 	public static List<ICourse> getStudentCourses(IStudent student){
 		Set<String> courseIDs = student.getCourseIDList();
 		List<ICourse> result = new LinkedList<ICourse>();
@@ -85,7 +85,7 @@ public class Course_DB {
 		}
 	}
 	
-	 @SuppressWarnings("unchecked")
+	// @SuppressWarnings("unchecked")
 	public static List<IShiur> getSchedule(IStudent stu){
 			List<ICourse> courses=getStudentCourses(stu);
 			List<IShiur> shiurim=new LinkedList<IShiur>();
