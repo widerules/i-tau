@@ -116,5 +116,19 @@ public class TauCourse implements ICourse{
 	public boolean isStudentInCourse(IStudent student) {
 		return isStudentInCourse(student.getFacebookID());
 	}
+	
+	public String toString(boolean isHeader)
+	{
+		String temp;
+		if (isHeader) {
+			return "<h2 id=\"course_toString\">" + this.getCourseName() +  "-"  + this.getProfessor()
+					+  "(" + this.getID() + ") </h2>";
+		}
+		else {
+			return "<A href = \"CourseGroupPage.jsp?courseID=" + this.getID() + "\" id=\"course_toString\">" + this.getCourseName() +  "-"  + this.getProfessor()
+					+  "(" + this.getID() + ") </A>";
+		}
+			
+				}
 
 }

@@ -34,4 +34,5 @@ public interface ICourse {
 	public void removeStudent(IStudent stu);
 	public boolean isStudentInCourse(String studentID);
 	public boolean isStudentInCourse(IStudent student);
+	public String toString(boolean isHeader);
 }

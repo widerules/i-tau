@@ -1,20 +1,20 @@
 
 
 
-package com.google.code.iTau.servlets;
+package com.google.unizone.servlets;
 
 import javax.servlet.http.HttpServlet;
 
 import javax.servlet.http.HttpServletRequest; 
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.code.iTau.DB_Logic;
-import com.google.code.iTau.ICourse;
-import com.google.code.iTau.IShiur;
-import com.google.code.iTau.ITest;
-import com.google.code.iTau.IStudent;
-import com.google.code.iTau.MyTest;
-import com.google.code.iTau.ShiurComparator;
+import com.google.unizone.server.DB_Logic;
+import com.google.unizone.server.ICourse;
+import com.google.unizone.server.IShiur;
+import com.google.unizone.server.ITest;
+import com.google.unizone.server.IStudent;
+import com.google.unizone.server.MyTest;
+import com.google.unizone.server.ShiurComparator;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -27,7 +27,7 @@ import java.util.List;
  * 2. semester final tests ('tests')
  */
 @SuppressWarnings("serial")
-public class HomePageScheduale extends HttpServlet{
+public class HomePageServlet extends HttpServlet{
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) {
 		String facebookID = request.getParameter("facebookID");
