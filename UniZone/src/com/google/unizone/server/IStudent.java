@@ -12,6 +12,8 @@ public interface IStudent {
 	public void setName(String name);
 	public String getPic();
 	public void setPic(String url);
+	public Set<String> getFBFriends();
+	public void setFBFriends(Set<String> friendsIDs);
 	public String getFaculty();
 	public void setFaculty(String faculty);
 	public void setYear(int year);
