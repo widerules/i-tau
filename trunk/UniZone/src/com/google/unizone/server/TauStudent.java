@@ -27,8 +27,10 @@ public class TauStudent implements IStudent {
 	private int year; 
 	@Persistent
 	private Set<String> courseIDList;
+	@Persistent
+	private Set<String> fbFriends;
 	
-	public TauStudent(String facebookID, String accessToken, String picUrl, String name, String faculty, int year, String courseIDList) {
+	public TauStudent(String facebookID, String accessToken, String picUrl, String friends, String name, String faculty, int year, String courseIDList) {
 		this.faculty = faculty;
 		this.name = name;
 		this.year = year;
@@ -36,6 +38,7 @@ public class TauStudent implements IStudent {
 		this.accessToken = accessToken;
 		this.facebookID = facebookID;
 		this.picUrl = picUrl;
+		this.fbFriends = new TreeSet<String>(Arrays.asList(friends.split(" ")));
 		//str_to_time_table(timeTableStr, timeTable);
 	}
 	
@@ -108,5 +111,11 @@ public class TauStudent implements IStudent {
 	}
 	public void setPic(String url) {
 		this.picUrl = url;
+	}
+	public Set<String> getFBFriends() {
+		return this.fbFriends;
+	}
+	public void setFBFriends(Set<String> friendsIDs) {
+		this.fbFriends = friendsIDs;
 	}
 }
