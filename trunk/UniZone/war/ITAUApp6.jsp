@@ -1,5 +1,5 @@
 <%@ page import="com.restfb.*" %>
-<%@ page import="com.google.itau.client.SessionManager" %>
+<%@ page import="com.google.unizone.client.SessionManager" %>
 
 <!doctype html>
 <!-- The DOCTYPE declaration above will set the     -->
@@ -48,52 +48,15 @@
     </noscript>
     
     <% 
-    	String APP_ID = System.getProperty("APP_ID");
-		String APP_SECRET = System.getProperty("APP_SECRET");
-		String SCOPE = System.getProperty("SCOPE");
-		String CANVAS_APP_URL = System.getProperty("CANVAS_APP_URL");
-		SessionManager httpSession = new SessionManager(request, response);
-		ExtendedFaceBookClient fbclient = new ExtendedFaceBookClient(APP_ID, APP_SECRET);
-		Parameter scope = Parameter.with("scope", SCOPE); %>
-		
-		<script type="text/javascript">
-		 top.location = "https://graph.facebook.com/oauth/access_token?client_id=289095354463141&redirect_uri=http://apps.facebook.com/itau_application/homepage.jsp&client_secret=d66e6579629895f958012fd28f41e1d0&code=AQANEF0csVF83deqjBe7fYwNEJaOfowBh8OTaqfE4Dwti6TnqVLYbIjaZ6yvKsHg2VbZXch57eqR-Cg10cyW6BgatbiK0qloS71JE3fI-SFOcJPjPKh-787YMXjP_aO-X441dxJQ4teUtE2lLRYQ2KS20pITm1hyA87fkdwCfy4l_Y8dbHgzKpgvo-XHUY_UN5A#_=_";
-			//top.location = "http://www.one.co.il";
-		</script>
-		
-		//if (httpSession.getCustomerAccessToken() == null){ %>
-				<script type="text/javascript">
-			      //  top.location = "<%= fbclient.getCanvasAuthorizeURL(CANVAS_APP_URL + "homepage.jsp", scope) %>";
-			 		top.location = "http://ynet.co.il";
-			 	</script>
-			 	
-			 	</script>
-			 	</body>
-			 	</html>
-		//	<%
-		//		return;
-			//}
-			
-		//	else{
-				//Set Access Customer access_token in session for future use
-	//			httpSession.setCustomerAccessToken(fbclient.getAccessToken());
-	//		}
-	//	%>
-		
-		<h1><%= fbclient.getAccessToken() %> </h1>
-    <h1>Web Application Starter Project</h1>
-
-    <table align="center">
-      <tr>
-        <td colspan="2" style="font-weight:bold;">Please enter your name:</td>        
-      </tr>
-      <tr>
-        <td id="nameFieldContainer"></td>
-        <td id="sendButtonContainer"></td>
-      </tr>
-      <tr>
-        <td colspan="2" style="color:red;" id="errorLabelContainer"></td>
-      </tr>
-    </table>
+     String APP_ID = System.getProperty("APP_ID");
+  String APP_SECRET = System.getProperty("APP_SECRET");
+  String SCOPE = System.getProperty("SCOPE");
+  String CANVAS_APP_URL = System.getProperty("CANVAS_APP_URL");
+  SessionManager httpSession = new SessionManager(request, response);
+  ExtendedFaceBookClient fbclient = new ExtendedFaceBookClient(APP_ID, APP_SECRET);
+  Parameter scope = Parameter.with("scope", SCOPE); %>
+    <script type="text/javascript">
+           top.location = "<%= fbclient.getCanvasAuthorizeURL(CANVAS_APP_URL + "homepage.jsp", scope) %>";
+  	</script>
   </body>
 </html>
