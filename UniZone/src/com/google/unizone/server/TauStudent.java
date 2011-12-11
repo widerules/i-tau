@@ -9,7 +9,7 @@ import javax.jdo.annotations.PrimaryKey;
 
 @PersistenceCapable
 public class TauStudent implements IStudent {
-	
+
 	@PrimaryKey
 	@Persistent
 	private String facebookID;
@@ -29,7 +29,7 @@ public class TauStudent implements IStudent {
 	private Set<String> courseIDList;
 	@Persistent
 	private Set<String> fbFriends;
-	
+
 	public TauStudent(String facebookID, String accessToken, String picUrl, String friends, String name, String faculty, int year, String courseIDList) {
 		this.faculty = faculty;
 		this.name = name;
@@ -41,19 +41,19 @@ public class TauStudent implements IStudent {
 		this.fbFriends = new TreeSet<String>(Arrays.asList(friends.split(" ")));
 		//str_to_time_table(timeTableStr, timeTable);
 	}
-	
+
 	//private void str_to_time_table(String timeTableStr, HashMap<String, String> timeTable) {
-		//TODO: decide a format in which will come and parse it
+	//TODO: decide a format in which will come and parse it
 	//}
-	
+
 	public int isFree() {
 		return this.isFree;
 	}
-	
+
 	//public int isFriendFree(IStudent friend) {
-		//return friend.isFree();
+	//return friend.isFree();
 	//}
-	
+
 	/* 0 - free
 	 * 1 - free but 'taken'
 	 * 2 - not free
@@ -118,4 +118,21 @@ public class TauStudent implements IStudent {
 	public void setFBFriends(Set<String> friendsIDs) {
 		this.fbFriends = friendsIDs;
 	}
+
+	public String toString(boolean isHeader){
+
+		String str;
+		str = "";
+		str += "<table id=\"student_toString\"><tr>";
+		str += "<td><img src=\"" + this.getPic() + "\"></td>";
+		if(isHeader)
+			str += "<td><h2 id=\"student_name\">" + this.getName() + "</h2></td>";
+		else
+			str += "<td><a href=\"friendPage.jsp?studentID=" + this.getFacebookID() + "\" id=\"student_name\">" + this.getName() + "</a></td>";
+		str += "</tr></table>";
+
+		return str;
+	}
+
+
 }
