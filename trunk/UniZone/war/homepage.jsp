@@ -11,12 +11,13 @@
 <!doctype html>
 <html>
   <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
     <script type="text/javascript" language="javascript" src="itauapp6/itauapp6.nocache.js"></script>
+  <link type="text/css" rel="stylesheet" href="style.css">
   </head>
   <body>
-  	<%
+    <%
   	
   		SessionManager httpSession = new SessionManager(request, response);
   		
@@ -34,10 +35,9 @@
 		id = myData.get(2);
 		Course_DB.startSimulation();
   	%>
-  	name: <%= myData.get(1) %>
-    <img src = "http://<%= myData.get(0) %>">
-    <br><br>
-    id: <%= myData.get(2) %>
+  <%=Course_DB.appToString()%>
+    
+  	
   
  <!--//create student, save username, pic url
  //move to schedule fill in page
@@ -46,46 +46,39 @@
  	<%
  		if(Course_DB.checkIfStudentExist(myData.get(2)))
  		{
- 		%>
- 	
- 			
- 			<br> Hooray! you're registered to iTAU!;
- 			<br> Courses Groups:
- 			<% IStudent Tal = Course_DB.getStudent(myData.get(2));
+ 			IStudent student = Course_DB.getStudent(myData.get(2));
  			String course;
- 			String courseID;
- 			String fullGroupUrl;
- 			String GroupUrl = "CourseGroupPage.jsp?courseID=";
- 			String Schedule = Course_DB.scheduleToString(Tal);
- 			List<ICourse> courses = Course_DB.getStudentCourses(Tal);
- 			for (ICourse iCourse : courses) { 
-				course = iCourse.getCourseName();
-				courseID = iCourse.getID();
-				fullGroupUrl = GroupUrl + courseID;
-			%>
-				<br>
-				<A HREF = <%=fullGroupUrl %>><%=course %></A>
-			<% 
-			}
-			%>
+ 			String Schedule = Course_DB.scheduleToString(student);
+ 			List<ICourse> courses = Course_DB.getStudentCourses(student);
+ 			%>
+ 			<p><%= student.toString(true) %></p>
  			
- 			<br>Schedule: 	<%= Schedule %>
+ 			<p>
+ 				<h3 id="sub_header">Courses Groups</h3>
+	 			<%
+	 			for (ICourse iCourse : courses) { 
+					course = iCourse.toString(false);
+				%>
+					<br><br><%=course %>
+				<% 
+				}
+				%>
+ 			</p>
  			
+ 			<p>
+ 				<h3 id="sub_header">Schedule</h3>
+ 				<%= Schedule %>
+ 			</p>
  			
  		<%
  		}
  		else
  		{
  		%>
- 			Oh no, you are not registered!
-
+ 			<p>You are not registered. Redirecting...</p>
 <%
 		}
  %>
  		
- 		
-  
- 
 	</body>
-	
 </html>
