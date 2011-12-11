@@ -34,7 +34,7 @@ public class Course_DB {
 		//ICourse bdida = new TauCourse("tau_2", "bdida", "tarsi", null, null, null, "A", new TreeSet<String>());
 		//ICourse infi = new TauCourse("tau_3", "infi", "inna", null, null, null, "A", new TreeSet<String>());
 		
-		createStudent("1", "all","PIC", "tal Gerbi", "cs", 3, "tau_1");
+		createStudent("1", "all","PIC", "33", "tal Gerbi", "cs", 3, "tau_1");
 		
 		
 	}
@@ -43,8 +43,8 @@ public class Course_DB {
 		TauCourse course=new TauCourse(courseID, courseName, professorName, lessonTimes, moedADate, moedBDate, semester, studentIDList);
 		course_hash.put(courseID, course);
 	}
-	public static void createStudent(String facebookID, String accessToken, String picUrl, String name, String faculty, int year, String courseIDList) {
-		TauStudent stu=new TauStudent(facebookID,accessToken,picUrl,name,faculty,year,courseIDList);
+	public static void createStudent(String facebookID, String accessToken, String picUrl, String friends, String name, String faculty, int year, String courseIDList) {
+		TauStudent stu=new TauStudent(facebookID,accessToken,picUrl,friends,name,faculty,year,courseIDList);
 		student_hash.put(facebookID, stu);
 		Set<String> cur=stu.getCourseIDList();
 		for (String s:cur){
@@ -132,9 +132,8 @@ public class Course_DB {
 	  * this method return free friends in the format of:
 	  * key=facebookID, value=hour which he is free until
 	  */
-	 public static Map<String,Integer> findFreeFriends(String facebookID) {
-		 IStudent student = getStudent(facebookID);
-		 List<IShiur> schedule = getSchedule(student);
+	 public static Map<String,Integer> findFreeFriends(IStudent student) {
+		 Set<String> schedule = student.getFBFriends();
 		 Calendar cal = new GregorianCalendar();
 		 int curr_day = cal.get(Calendar.DAY_OF_WEEK);
 		 int curr_hour = cal.get(Calendar.HOUR);
@@ -168,6 +167,9 @@ public class Course_DB {
 				 if (shiur.getBeginTime().getHours() < result) {
 					 result = shiur.getBeginTime().getHours();
 				 }
+			 }
+			 if (shiur.getDay() > curr_day) {
+				 break;
 			 }
 		 }
 		 if (result == 100) {
