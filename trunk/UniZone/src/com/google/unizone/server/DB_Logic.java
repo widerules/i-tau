@@ -1,6 +1,7 @@
 package com.google.unizone.server;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -21,7 +22,7 @@ public class DB_Logic {
 		}
 	}
 	
-	public IShiur[][]  scheduleToArray (IStudent student) {
+	public static IShiur[][]  scheduleToArray (IStudent student) {
 		List<IShiur> schedule = DB_Logic.getSchedule(student);
 		IShiur[][] SheduleArray =  new IShiur[13][7];
 		int day, StartTime, EndTime, Length;
@@ -38,7 +39,7 @@ public class DB_Logic {
 		return SheduleArray;
 	}
 	
-	public String  scheduleToString (IStudent student) {
+	public static String  scheduleToString (IStudent student) {
 		IShiur[][] scheduleArray  =scheduleToArray(student);
 		String output = "";
 		String iShiurName = "";
@@ -58,10 +59,10 @@ public class DB_Logic {
 					iShiurName = iShiurName.substring(0, columnWidth-1);
 				}
 				else {
-					Spaces2Add = columnWidth - iShiurName.length();
+					Spaces2Add = columnWidth - shiurWidth;
 					output += iShiurName;
 					for (int f=0;f<Spaces2Add;f++){
-						output += " ";
+						output += "              f                                            ";
 					}
 				}
 			}
@@ -69,6 +70,8 @@ public class DB_Logic {
 		}
 		return output;
 	}
+	
+	
 	
 	public static void createCourse(ICourse course) {
 		if (course != null) {

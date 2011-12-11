@@ -1,12 +1,6 @@
 package com.google.unizone.server;
 
 public class Available {
-	public Available(IStudent student,int beginTm,int endTm,String message){
-		this.student=student;
-		this.beginTm=beginTm;
-		this.endTm=endTm;
-		this.message=message;
-	}
 
 	IStudent student;
 	public IStudent getStudent() {
@@ -35,7 +29,12 @@ public class Available {
 	}
 	int beginTm, endTm;
 	String message;
-	
+	public Available(IStudent student,int beginTm,int endTm,String message){
+		this.student=student;
+		this.beginTm=beginTm;
+		this.endTm=endTm;
+		this.message=message;
+	}
 	
 	
 }
