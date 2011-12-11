@@ -24,5 +24,6 @@ public interface IStudent {
 	public void addCourseID(String courseID);
 	public void removeCourseID(String courseID);
 	public boolean isTakeCourse(String courseID);
+	public String toString(boolean isHeader);
 	
 }
