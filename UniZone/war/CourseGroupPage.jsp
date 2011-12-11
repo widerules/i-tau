@@ -9,29 +9,31 @@
 <!doctype html>
 <html>
   <head>
+  <link type="text/css" rel="stylesheet" href="style.css">
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
     <script type="text/javascript" language="javascript" src="itauapp6/itauapp6.nocache.js"></script>
   </head>
   <body>
+  		<%=Course_DB.appToString()%>
   		<%     
   		String courseID = request.getParameter("courseID");
   		ICourse course = Course_DB.getCourse(courseID);
-  		String courseName= course.getCourseName();
-%>
-	  		this is <%=courseName %> page!!! 
-	  		<br>
+		%>
+			<%=course.toString(true) %> 
+	  		<table id="course_friends"><tr>
 	  		<%
 	  		Set<String> courseStudents = course.getStudents();
 	  		for (String studentID : courseStudents) {
 				IStudent student = Course_DB.getStudent(studentID);
 			%>	
-				<br><A HREF = http://www.one.co.il><%=student.getName()%></A>
-				<img src = "<%=student.getPic() %>">
-    
+				<%= student.toString(false) %>
 			<%
 			}
 			%>
+			</tr></table>
+			<br><br>
+			<a href = <%="ITAUApp6.jsp" %>>back to home</A>
 	  		
 	</body>
 	

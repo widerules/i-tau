@@ -24,9 +24,9 @@
   <!-- Configure java.util.logging -->
   <system-properties>
     <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
-    <property name="APP_ID" value="289095354463141"/>
-	<property name="APP_SECRET_CODE" value="d66e6579629895f958012fd28f41e1d0"/>
-	<property name="CANVAS_APP_URL"  value="http://apps.facebook.com/itau_application/"/>
+    <property name="APP_ID" value="262622373796556"/>
+	<property name="APP_SECRET_CODE" value="959c5b99bf9889519c947c0f842f5544"/>
+	<property name="CANVAS_APP_URL"  value="http://apps.facebook.com/unizone/"/>
 	<property name="SCOPE"  value="email"/>
   </system-properties>
 
