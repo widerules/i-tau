@@ -2,13 +2,15 @@ package com.google.unizone.server;
 
 
 //import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-//import java.util.TreeSet;
 
 import com.google.unizone.server.TauCourse;
 import com.google.unizone.server.TauStudent;
@@ -37,11 +39,11 @@ public class Course_DB {
 		
 	}
 	
-	public void createCourse(String courseID, String courseName, String professorName, List<ILesson> lessonTimes, MyDate moedADate, MyDate moedBDate, String semester, Set<String> studentIDList){
+	public static void createCourse(String courseID, String courseName, String professorName, List<ILesson> lessonTimes, MyDate moedADate, MyDate moedBDate, String semester, Set<String> studentIDList){
 		TauCourse course=new TauCourse(courseID, courseName, professorName, lessonTimes, moedADate, moedBDate, semester, studentIDList);
 		course_hash.put(courseID, course);
 	}
-	public void createStudent(String facebookID, String accessToken, String picUrl, String name, String faculty, int year, String courseIDList) {
+	public static void createStudent(String facebookID, String accessToken, String picUrl, String name, String faculty, int year, String courseIDList) {
 		TauStudent stu=new TauStudent(facebookID,accessToken,picUrl,name,faculty,year,courseIDList);
 		student_hash.put(facebookID, stu);
 		Set<String> cur=stu.getCourseIDList();
@@ -119,12 +121,60 @@ public class Course_DB {
 	}
 	 
 	 public static Boolean checkIfCourseExist(String id) {
-	        return course_hash.containsKey(id);
-	    }
+	     return course_hash.containsKey(id);
+	 }
 	 
-	    public static Boolean checkIfStudentExist(String id) {
-	    	return student_hash.containsKey(id);
-	    }
+	 public static Boolean checkIfStudentExist(String id) {
+		 return student_hash.containsKey(id);
+	 }
+	 
+	 /*
+	  * this method return free friends in the format of:
+	  * key=facebookID, value=hour which he is free until
+	  */
+	 public static Map<String,Integer> findFreeFriends(String facebookID) {
+		 IStudent student = getStudent(facebookID);
+		 List<IShiur> schedule = getSchedule(student);
+		 Calendar cal = new GregorianCalendar();
+		 int curr_day = cal.get(Calendar.DAY_OF_WEEK);
+		 int curr_hour = cal.get(Calendar.HOUR);
+		 int
+		 boolean isFree = true;
+		 for (IShiur shiur : schedule) {
+			 if (shiur.getDay() == curr_day) {
+				 
+			 }
+		 }
+	 }
+	 
+	 /*
+	  * if student is free will return the time which he is free until,
+	  * else will return -1 if student is in class, -2 if not studying that day
+	  */
+	 public int isFree(IStudent student, int curr_day, int curr_hour) {
+		 List<IShiur> schedule = getSchedule(student);
+		 //dummy value which cannot represent an hour
+		 //if in the end of proc will stay 100, student does not study that day
+		 int result = 100;
+		 for (IShiur shiur : schedule) {
+			 if (shiur.getDay() == curr_day) {
+				 if (shiur.getBeginTime().getHours() <= curr_hour && shiur.getEndTime().getHours() >= curr_hour) {
+					 // student is in class
+					 return -1;
+				 }
+				 if (shiur.getEndTime().getHours() <= curr_hour) {
+					 continue;
+				 }
+				 if (shiur.getBeginTime().getHours() < result) {
+					 result = shiur.getBeginTime().getHours();
+				 }
+			 }
+		 }
+		 if (result == 100) {
+			 result = -2;
+		 }
+		 return result;
+	 }
 	    
 	    /*public static void addCourseToStudet(IStudent stu, ICourse course) {
 	    	stu.addCourseID(course.getID());
