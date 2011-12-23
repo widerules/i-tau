@@ -117,16 +117,26 @@ public class TauCourse implements ICourse{
 		return isStudentInCourse(student.getFacebookID());
 	}
 	
+	public String nameToString (){
+		return this.getCourseName() +  "-"  + this.getProfessor() +  "(" + this.getID() + ")"; 
+	}
+	
+	
 	public String toString(boolean isHeader)
 	{
-		String temp;
+		String courseName;
+		courseName =  this.nameToString();
 		if (isHeader) {
-			return "<h2 id=\"course_toString\">" + this.getCourseName() +  "-"  + this.getProfessor()
-					+  "(" + this.getID() + ") </h2>";
+			return "<h2 id=\"course_toString\">" + courseName + "</h2>";
 		}
 		else {
-			return "<A href = \"CourseGroupPage.jsp?courseID=" + this.getID() + "\" id=\"course_toString\">" + this.getCourseName() +  "-"  + this.getProfessor()
-					+  "(" + this.getID() + ") </A>";
+			if (courseName.length() >=70)
+				return  "<a href = \"CourseGroupPage.jsp?courseID=" + this.getID() + "\" id=\"course_toString\"><img src =\"untitled2.bmp\"/></a> <a rel=\"htmltooltip\" >"  + courseName.substring(0,70) + "</a>"
+				+ "<div class=\"htmltooltip\">" + courseName + "</div>";
+			else
+				return  "<a href = \"CourseGroupPage.jsp?courseID=" + this.getID() + "\" id=\"course_toString\"><img src =\"untitled2.bmp\"/></a> <a rel=\"htmltooltip\" >"  + courseName + "</a>"
+				+ "<div class=\"htmltooltip\">" + courseName + "</div>";
+			
 		}
 			
 				}

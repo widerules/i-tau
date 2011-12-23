@@ -8,4 +8,5 @@ public interface IShiur {
 	public String getCourseName();
 	public String getProfessor();
 	public String getID();
+	public String nameToString ();
 }

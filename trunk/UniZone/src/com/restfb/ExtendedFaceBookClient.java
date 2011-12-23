@@ -5,9 +5,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -17,6 +19,8 @@ import javax.servlet.http.HttpSession;
 
 
 import com.google.unizone.client.SessionManager;
+import com.google.unizone.server.Course_DB;
+import com.google.unizone.server.IStudent;
 
 import com.restfb.types.OAuth;
 import com.restfb.types.User;
@@ -103,6 +107,56 @@ public class ExtendedFaceBookClient extends DefaultFacebookClient {
 
 	}
 
+	public List<IStudent> parseFriends () {
+		//Pattern friendUID = Pattern.compile("{\"uid2\":\"(\\d*)\"}" );
+		Pattern friendUID = Pattern.compile(":\"(.*)\"}" );
+		Matcher matcher;
+		FacebookClient fbclient = new DefaultFacebookClient(this.getAccessToken());
+		String temp = null;
+		List<String> query = new ArrayList<String>();
+		List<String> myFriends = new ArrayList<String>();
+		List<IStudent> appFriends = new ArrayList<IStudent>(); 
+		Set<IStudent> allStudents = new HashSet<IStudent>(); 
+		try{
+			String fqlFriends = "SELECT uid2 FROM friend WHERE uid1 = me()";
+			query = fbclient.executeQuery(fqlFriends, String.class);
+			
+		}
+		catch (Exception e) {
+			return null;
+		}
+		String uid;
+		for (String string : query) {
+			matcher = friendUID.matcher(string);
+			matcher.find();
+			string = matcher.group(1);
+			myFriends.add(string);
+			temp += string + "\n";
+		};
+		temp+= "\n";
+		 allStudents = Course_DB.getAllStudents();
+		 for (IStudent iStudent : allStudents) {
+			temp += iStudent.getFacebookID() + "\n";
+			 uid = iStudent.getFacebookID();
+			
+			if (myFriends.contains(uid)){
+				appFriends.add(iStudent);
+			}
+		}
+		
+		 // return temp;
+		return appFriends;
+	}
+	
+	public String appFriendsToString(){
+		List<IStudent> appFriends = parseFriends();
+		String output = "";
+		for (IStudent iStudent : appFriends) {
+			output += iStudent.toString(false) + "<br>";
+		}
+		return output;
+	}
+	
 	public List<String> getMyData () {
 		Pattern name = Pattern.compile("name\":\"(.*)\",");
 		Pattern id = Pattern.compile("uid\":(\\d*)");
@@ -110,7 +164,8 @@ public class ExtendedFaceBookClient extends DefaultFacebookClient {
 		Matcher matcher, matcher2, matcher3;
 		String temp;
 		FacebookClient fbclient = new DefaultFacebookClient(this.getAccessToken());
-		List<String> myData = new ArrayList<String>();
+		List<String> myData,query = new ArrayList<String>();
+		
 		User u;
 		String output = "";
 		try{
@@ -120,30 +175,35 @@ public class ExtendedFaceBookClient extends DefaultFacebookClient {
 			//String fql = "select uid2 from friend where uid1 = " + u.getId();
 			
 			myData = fbclient.executeQuery(fql, String.class);
+			
 		}
 		catch (FacebookException e){
-			myData.add("glaaa");
-			return myData;
+			query.add("glaaa");
+			return query;
 		}
 		
 		
-		output = myData.get(0);
+		output =  myData.get(0);
 		matcher = pa.matcher(output);
 		matcher.find();
-		temp = matcher.group();
-		myData.set(0, temp);
+		temp = "http:////" + matcher.group();
+		query.add(0, temp);
 		matcher2 = name.matcher(output);
 		matcher2.find();
 		temp = matcher2.group(1);
-		myData.add(1, temp);
+		query.add(1, temp);
 		matcher3 = id.matcher(output);
 		matcher3.find();
 		temp = matcher3.group(1);
-		myData.add(2, temp);
+		query.add(2, temp);
+		//query.add(3,myFriends)
 		
-		return myData;
+		
+		return query;
 		
 	}
+	
+	
 	
 
 

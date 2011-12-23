@@ -41,4 +41,8 @@ public class Shiur implements IShiur{
 	public String getID() {
 		return this.courseID;
 	}
+	
+	public String nameToString (){
+			return this.getCourseName() +  "<br>"  + this.place + "<br>" + this.getID() + "<br>" +  this.getProfessor(); 
+	}
 }

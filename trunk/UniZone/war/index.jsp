@@ -1,5 +1,5 @@
 <%@ page import="com.restfb.*" %>
-<%@ page import="com.google.itau.client.SessionManager" %>
+<%@ page import="com.google.unizone.client.SessionManager" %>
 
 <!doctype html>
 <!-- The DOCTYPE declaration above will set the     -->
@@ -7,13 +7,14 @@
 <!-- "Standards Mode". Replacing this declaration   -->
 <!-- with a "Quirks Mode" doctype is not supported. -->
 
-<html>
+<html> 
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
     <!--                                                               -->
     <!-- Consider inlining CSS to reduce the number of requested files -->
     <!--                                                               -->
+    <link type="text/css" rel="stylesheet" href="ITAUApp6.css">
 
     <!--                                           -->
     <!-- Any title is fine                         -->
@@ -47,31 +48,15 @@
     </noscript>
     
     <% 
-		String APP_ID = System.getProperty("APP_ID");
-		String APP_SECRET = System.getProperty("APP_SECRET");
-		String SCOPE = System.getProperty("SCOPE");
-		String CANVAS_APP_URL = System.getProperty("CANVAS_APP_URL");
-			
-		SessionManager httpSession = new SessionManager(request, response);
-		ExtendedFaceBookClient fbclient = new ExtendedFaceBookClient(APP_ID, APP_SECRET);
-		Parameter scope = Parameter.with("scope", SCOPE);
-	
-		if (httpSession.getCustomerAccessToken() == null){			
-			
-			//Verify user has installed our app. If not Redirect to Installation + Redirect Back
-			if (!fbclient.checkUser(httpSession, true, scope)){	%>
-			 	<h1>Login failed (should never happen)</h1>
-			<%
-				return;
-			}
-			
-			else{
-				//Set Access Customer access_token in session for future use
-				httpSession.setCustomerAccessToken(fbclient.getAccessToken());
-			}
-		}
-		%>
-		
-		<h1><%= fbclient.getAccessToken() %> </h1>
+     String APP_ID = System.getProperty("APP_ID");
+  String APP_SECRET = System.getProperty("APP_SECRET");
+  String SCOPE = System.getProperty("SCOPE");
+  String CANVAS_APP_URL = System.getProperty("CANVAS_APP_URL");
+  SessionManager httpSession = new SessionManager(request, response);
+  ExtendedFaceBookClient fbclient = new ExtendedFaceBookClient(APP_ID, APP_SECRET);
+  Parameter scope = Parameter.with("scope", SCOPE); %>
+    <script type="text/javascript">
+           top.location = "<%= fbclient.getCanvasAuthorizeURL(CANVAS_APP_URL + "homepage.jsp", scope) %>";
+  	</script>
   </body>
 </html>

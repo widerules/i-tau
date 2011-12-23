@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -24,9 +25,18 @@ public class Course_DB {
 	private static HashMap<String, IStudent> student_hash = new HashMap<String, IStudent>();
 
 
-
+	public static Set<IStudent> getAllStudents() { 
+	Set<IStudent> stus= new HashSet<IStudent>(); 
+	//stus.addAll(student_hash.values()); 
+	for (IStudent iStudent : student_hash.values()) {
+		stus.add(iStudent);
+	}
+	return stus; }
+	
+	
+	
 	public static String appToString (){
-		return "<A href=\"ITAUApp6.jsp\"><h1 id=\"appTitle\">UniZone</h1></A>";
+		return "<A href=\"index.jsp\"><h1 id=\"appTitle\">UniZone</h1></A>";
 	}
 
 	public static String[][]  scheduleToArray (IStudent student) {
@@ -39,7 +49,7 @@ public class Course_DB {
 			EndTime = iShiur.getEndTime().getHours();
 			Length = EndTime - StartTime;
 			for (int i=0;i<Length;i++){
-				SheduleArray[StartTime-7+i][day] = iShiur.getCourseName();
+				SheduleArray[StartTime-7+i][day] = iShiur.nameToString();
 			}
 
 		}
@@ -81,8 +91,15 @@ public class Course_DB {
 					output += "<td id=\"header\">";
 				else
 					output += "<td>";
-				if (scheduleArray[i][j] != null)
-					output += scheduleArray[i][j];
+				if (scheduleArray[i][j] != null){
+					if (scheduleArray[i][j].length() >= 10){
+						output += "<a rel=\"htmltooltip\">" + scheduleArray[i][j].substring(0, 10) + "</a>";
+						output += "<div class=\"htmltooltip\">" + scheduleArray[i][j] + "</div>";
+					}
+					else{
+						output += scheduleArray[i][j];
+					}
+				}
 				output += "</td>";
 			}
 			output += "</tr>";
@@ -180,12 +197,12 @@ public class Course_DB {
 		lessonsLinearAlgebra.add(lesson1LinearAlgebra1);
 		lessonsLinearAlgebra.add(lesson2LinearAlgebra1);
 
-		MyTime bTimeLesson1Bdida = new MyTime(12, 00);
-		MyTime eTimeLesson1Bdida = new MyTime(14, 00);
-		Lesson lesson1Bdida = new Lesson(1, bTimeLesson1Bdida, eTimeLesson1Bdida, "Lev Auditarium 009");
+		MyTime bTimeLesson1Bdida = new MyTime(8, 00);
+		MyTime eTimeLesson1Bdida = new MyTime(10, 00);
+		Lesson lesson1Bdida = new Lesson(2, bTimeLesson1Bdida, eTimeLesson1Bdida, "Lev Auditarium 009");
 		MyTime bTimeLesson2Bdida = new MyTime(17, 00);
 		MyTime eTimeLesson2Bdida = new MyTime(19, 00);
-		Lesson lesson2Bdida = new Lesson(2, bTimeLesson2Bdida, eTimeLesson2Bdida, "Lev Auditarium 009");
+		Lesson lesson2Bdida = new Lesson(1, bTimeLesson2Bdida, eTimeLesson2Bdida, "Lev Auditarium 009");
 		MyDate maBdida = new MyDate(26, 2, 2012);
 		MyDate mbBdida = new MyDate(21, 9, 2012);
 		List<ILesson> lessonsBdida = new LinkedList<ILesson>();
@@ -194,7 +211,7 @@ public class Course_DB {
 
 		MyTime bTimeLesson1ExtendedIntro = new MyTime(16, 00);
 		MyTime eTimeLesson1ExtendedIntro = new MyTime(18, 00);
-		Lesson lesson1ExtendedIntro = new Lesson(1, bTimeLesson1ExtendedIntro, eTimeLesson1ExtendedIntro, "Dan David 001");
+		Lesson lesson1ExtendedIntro = new Lesson(2, bTimeLesson1ExtendedIntro, eTimeLesson1ExtendedIntro, "Dan David 001");
 		MyTime bTimeLesson2ExtendedIntro = new MyTime(12, 00);
 		MyTime eTimeLesson2ExtendedIntro = new MyTime(14, 00);
 		Lesson lesson2ExtendedIntro = new Lesson(4, bTimeLesson2ExtendedIntro, eTimeLesson2ExtendedIntro, "Dan David 001");
@@ -211,11 +228,11 @@ public class Course_DB {
 
 		Course_DB.createStudent(
 				"822294292", "all","http://profile.ak.fbcdn.net/hprofile-ak-snc4/186097_822294292_2545466_q.jpg", "822294289 822294291 822294290", "Tal Gerbi", "cs", 1, "0366-1101-01 0366-1111-04 0368-1118-01 0368-1105-04"); 
-				Course_DB.createStudent(
-				"822294291", "all","http://upload.wikimedia.org/wikipedia/commons/0/02/Shari_Arison1.jpg", "822294292 822294290 822294289", "Shari Arison", "cs", 1, "0366-1101-01 0366-1111-04"); 
-				Course_DB.createStudent(
-				"822294290", "all","http://kinderland.xnet.co.il/var/142/189979-yuval-hamebulbal.jpg", "822294289 822294292 822294291", "Yuval Hamebulbal", "cs", 1, "0366-1101-01 0366-1111-04 0368-1118-01 0368-1105-04"); 
-				Course_DB.createStudent(
+		Course_DB.createStudent(
+				"690329329", "all","http://upload.wikimedia.org/wikipedia/commons/0/02/Shari_Arison1.jpg", "822294292 822294290 822294289", "Shari Arison", "cs", 1, "0366-1101-01 0366-1111-04"); 
+		Course_DB.createStudent(
+				"591867536", "all","http://kinderland.xnet.co.il/var/142/189979-yuval-hamebulbal.jpg", "822294289 822294292 822294291", "Yuval Hamebulbal", "cs", 1, "0366-1101-01 0366-1111-04 0368-1118-01"); 
+		Course_DB.createStudent(
 				"822294289", "all","http://www.lowdensitylifestyle.com/media/uploads/2010/10/Sigmund_Freud-loc.jpg", "822294290 822294292 822294291", "Sigmund Freud", "cs", 1, "0366-1101-01 0366-1111-04 0368-1118-01 0368-1105-04");	}
 
 	public static void createCourse(String courseID, String courseName, String professorName, List<ILesson> lessonTimes, MyDate moedADate, MyDate moedBDate, String semester, Set<String> studentIDList){
@@ -331,7 +348,7 @@ public class Course_DB {
 			}
 			times = isFree(ISfriend, curr_day, curr_hour);
 			String message=availabilityMessage(ISfriend, times);
-			
+
 			Available av= new Available(ISfriend, times[0], times[1], message); 
 			res.add(av);
 		}

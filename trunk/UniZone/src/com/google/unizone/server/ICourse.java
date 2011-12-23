@@ -35,4 +35,5 @@ public interface ICourse {
 	public boolean isStudentInCourse(String studentID);
 	public boolean isStudentInCourse(IStudent student);
 	public String toString(boolean isHeader);
+	public String nameToString ();
 }
