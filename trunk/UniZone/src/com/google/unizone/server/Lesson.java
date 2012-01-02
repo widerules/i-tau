@@ -1,6 +1,17 @@
 package com.google.unizone.server;
+
+
+import javax.jdo.annotations.Embedded;
+import javax.jdo.annotations.EmbeddedOnly;
+import javax.jdo.annotations.Extension;
+import javax.jdo.annotations.FetchGroup;
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
+
+import com.google.appengine.api.datastore.Key;
 
 /*
  * this class expresses a session of a course
@@ -9,26 +20,41 @@ import javax.jdo.annotations.Persistent;
  * each one of those is called a lesson.
  */
 
-@PersistenceCapable
-public class Lesson implements ILesson {
-	
+//(identityType = IdentityType.APPLICATION, detachable = "true")
+@PersistenceCapable(detachable = "true")
+//@EmbeddedOnly
+//@FetchGroup(name = "times", members = { @Persistent(name = "beginTime") })
+public class Lesson{
+
 	
 	/*public enum Day {
 	    SUNDAY, MONDAY, TUESDAY, WEDNESDAY, 
 	    THURSDAY, FRIDAY, SATURDAY 
 	}*/
-	@Persistent
-	private MyTime beginTime,endTime;
+	@PrimaryKey
+	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	@Extension(vendorName="datanucleus", key="gae.encoded-pk", value= "true")
+	private String lessonKey;
+	
+	@Persistent(defaultFetchGroup="true")
+	@Embedded
+	private MyTime beginTime;
+	
+	@Persistent(defaultFetchGroup="true")
+	@Embedded
+	private MyTime endTime;
+	
 	@Persistent
 	private int lessDay;
-	@Persistent
-	private String place;
+
 	
-	public Lesson(int day,MyTime beginTime,MyTime endTime, String place){
+	public Lesson(int day,MyTime beginTime,MyTime endTime){
 		this.lessDay=day;
 		this.beginTime=beginTime;
 		this.endTime=endTime;
-		this.place = place;
+	}
+	public int getDay(){
+		return lessDay;
 	}
 	
 	public MyTime getBeginTime(){
@@ -37,10 +63,9 @@ public class Lesson implements ILesson {
 	public MyTime getEndTime(){
 		return endTime;
 	}
-	public int getDay(){
-		return lessDay;
-	}
-	public String getPlace(){
-		return this.place;
+	
+	
+	public String getKey(){
+		return this.lessonKey;
 	}
 }

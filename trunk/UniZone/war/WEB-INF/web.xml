@@ -4,7 +4,34 @@ xmlns="http://java.sun.com/xml/ns/javaee"
 xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+	
 	<!-- TODO: Add <servlet> tags for each servlet here. -->
-	<!-- TODO: Add <servlet-mapping> tags for each <servlet> here. -->
+	<servlet>
+		<servlet-name>CoursePageServletMean</servlet-name>
+		<servlet-class>com.google.unizone.servlets.CoursePageServletMean</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CoursePageServletMean</servlet-name>
+		<url-pattern>/courseMean</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>CoursePageServlet</servlet-name>
+		<servlet-class>com.google.unizone.servlets.CoursePageServletMean</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CoursePageServlet</servlet-name>
+		<url-pattern>/course</url-pattern>
+	</servlet-mapping>
+	
+	
+	<servlet>
+		<servlet-name>DummyServlet</servlet-name>
+		<servlet-class>com.google.unizone.servlets.DummyServlet</servlet-class>
+	</servlet><servlet-mapping>
+		<servlet-name>DummyServlet</servlet-name>
+		<url-pattern>/dummy</url-pattern>
+	</servlet-mapping><!-- TODO: Add <servlet-mapping> tags for each <servlet> here. --><welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+</welcome-file-list>
 	<!-- TODO: Optionally add a <welcome-file-list> tag to display a welcome file. -->
 </web-app>

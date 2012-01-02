@@ -1,5 +1,7 @@
 <%@ page import="com.restfb.*" %>
 <%@ page import="com.google.unizone.client.SessionManager" %>
+<%@ page import="java.util.*" %>
+<%@ page import="com.google.unizone.server.*" %>
 
 <!doctype html>
 <!-- The DOCTYPE declaration above will set the     -->
@@ -35,7 +37,7 @@
   <!-- to create a completely dynamic UI.        -->
   <!--                                           -->
   <body>
-
+	<div id=allWhiteBox>
     <!-- OPTIONAL: include this if you want history support -->
     <iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position:absolute;width:0;height:0;border:0"></iframe>
     
@@ -47,16 +49,20 @@
       </div>
     </noscript>
     
-    <% 
+    <%
      String APP_ID = System.getProperty("APP_ID");
   String APP_SECRET = System.getProperty("APP_SECRET");
+  
   String SCOPE = System.getProperty("SCOPE");
   String CANVAS_APP_URL = System.getProperty("CANVAS_APP_URL");
   SessionManager httpSession = new SessionManager(request, response);
   ExtendedFaceBookClient fbclient = new ExtendedFaceBookClient(APP_ID, APP_SECRET);
-  Parameter scope = Parameter.with("scope", SCOPE); %>
+  Parameter scope = Parameter.with("scope", SCOPE); 	%>
     <script type="text/javascript">
-           top.location = "<%= fbclient.getCanvasAuthorizeURL(CANVAS_APP_URL + "homepage.jsp", scope) %>";
+    		
+           top.location = "<%= fbclient.getCanvasAuthorizeURL(CANVAS_APP_URL + "homepage.jsp") %>";
+  			
   	</script>
+  	</div>
   </body>
 </html>

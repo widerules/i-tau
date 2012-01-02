@@ -6,10 +6,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.unizone.server.DB_Logic;
-import com.google.unizone.server.ICourse;
+import com.google.unizone.server.Course;
 import com.google.unizone.server.IShiur;
 import com.google.unizone.server.ITest;
-import com.google.unizone.server.IStudent;
+import com.google.unizone.server.Student;
 import com.google.unizone.server.MyTest;
 import com.google.unizone.server.ShiurComparator;
 
@@ -30,8 +30,8 @@ public class ScheduleServlet extends HttpServlet {
 		String facebookID = request.getParameter("facebookID");
 		String semester = request.getParameter("semester");
 		String scheduleType = request.getParameter("schedule");
-		IStudent student = DB_Logic.getStudent(facebookID);
-		List<ICourse> courseList = DB_Logic.getStudentCourses(student);
+		Student student = DB_Logic.getStudent(facebookID);
+		List<Course> courseList = DB_Logic.getStudentCourses(student);
 		if ( scheduleType.equals("classes")) {
 			List<IShiur> lessons = DB_Logic.getSchedule(student);
 			//for (ICourse course : courseList) {
@@ -48,7 +48,7 @@ public class ScheduleServlet extends HttpServlet {
 		} else {
 			if (scheduleType.equals("tests")) {
 				List<ITest> tests = new LinkedList<ITest>();
-				for (ICourse course : courseList) {
+				for (Course course : courseList) {
 					if (course.getSemester().equals(semester)) {
 						ITest test_a = new MyTest(course.getCourseName(), course.getMoedADate(), course.getProfessor(), "UNKNOWN", "A", -1);
 						ITest test_b = new MyTest(course.getCourseName(), course.getMoedBDate(), course.getProfessor(), "UNKNOWN", "B", -1);

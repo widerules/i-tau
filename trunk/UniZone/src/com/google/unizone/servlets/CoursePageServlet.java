@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.unizone.server.DB_Logic;
-import com.google.unizone.server.ICourse;
-import com.google.unizone.server.IStudent;
+import com.google.unizone.server.Course;
+import com.google.unizone.server.Student;
 
 /*
  * this servlet if for getting all students studying in a course
@@ -22,10 +22,10 @@ public class CoursePageServlet extends HttpServlet {
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) {
 		String courseID = request.getParameter("courseID");
-		ICourse course = DB_Logic.getCourse(courseID);
-		List<IStudent> courseStudents = DB_Logic.getCourseStudents(course);
+		Course course = DB_Logic.getCourse(courseID);
+		List<Student> courseStudents = DB_Logic.getCourseStudents(course);
 		Map<String, String>	IDsAndAccess = new HashMap<String, String>();
-		for (IStudent student : courseStudents) {
+		for (Student student : courseStudents) {
 			IDsAndAccess.put(student.getFacebookID(), student.getAccessToken());
 		}
 		try {

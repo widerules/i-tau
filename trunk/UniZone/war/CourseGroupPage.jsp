@@ -2,7 +2,7 @@
 <%@ page import="com.restfb.types.*" %>
 <%@ page import="com.google.unizone.client.SessionManager" %>
 <%@ page import="java.util.*" %>
-<%@ page import="com.google.unizone.server.Course_DB" %>
+<%@ page import="com.google.unizone.server.DB_Logic" %>
 <%@ page import="com.google.unizone.server.IShiur" %>
 <%@ page import="com.google.unizone.server.*" %>
 
@@ -44,26 +44,33 @@ width: 250px; /*width of tooltip*/
     <script type="text/javascript" language="javascript" src="itauapp6/itauapp6.nocache.js"></script>
   </head>
   <body>
-  		<%=Course_DB.appToString()%>
+  	<div id=allWhiteBox>
+  		<%=Utils.appToString("course")%>
   		<%     
   		String courseID = request.getParameter("courseID");
-  		ICourse course = Course_DB.getCourse(courseID);
+  		String FBid = request.getParameter("FBid");
+  		List<String> mutualFriends;
+  		String APP_ID = System.getProperty("APP_ID");
+  		String APP_SECRET = System.getProperty("APP_SECRET_CODE");
+  		
+  		ExtendedFaceBookClient fbclient = new ExtendedFaceBookClient(APP_ID, APP_SECRET);
+  		
+  		Student meStudent = DB_Logic.getStudent(FBid);
+  		fbclient.setAccessToken(meStudent.getAccessToken());
+  		Course course = DB_Logic.getCourse(courseID);
 		%>
-			<%=course.toString(true) %> 
-	  		<table id="course_friends"><tr>
-	  		<%
-	  		Set<String> courseStudents = course.getStudents();
+			<%=course.toString(FBid,true) %> 
+	  		
+	  		<%	  		Set<String> courseStudents = course.getStudents();
 	  		for (String studentID : courseStudents) {
-				IStudent student = Course_DB.getStudent(studentID);
-			%>	
-				<%= student.toString(false) %>
-			<%
+				
+				Student student = DB_Logic.getStudent(studentID);
+			if (meStudent != null && student != null && !student.equals(meStudent)){
+				%><br><div id="line"><%= student.toString(meStudent,false,fbclient) %></div>
+			<%}
 			}
 			%>
-			</tr></table>
-			<br><br>
-			<a href = <%="ITAUApp6.jsp" %>>back to home</A>
-	  		
+		</div>
 	</body>
 	
 </html>

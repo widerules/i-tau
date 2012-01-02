@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.unizone.server.Course_DB;
 import com.google.unizone.server.DB_Logic;
-import com.google.unizone.server.ICourse;
-import com.google.unizone.server.IStudent;
+import com.google.unizone.server.Course;
+import com.google.unizone.server.Student;
 
 /*
  * this servlet if for getting all students studying in a course
@@ -24,11 +24,11 @@ public class CoursePageServletMean extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) {
 		String courseID = request.getParameter("courseID");
 		//////////////////////////////////////////////////
-		ICourse course = Course_DB.getCourse(courseID);
-		List<IStudent> courseStudents = Course_DB.getCourseStudents(course);
+		Course course = Course_DB.getCourse(courseID);
+		List<Student> courseStudents = Course_DB.getCourseStudents(course);
 		//////////////////////////////////////////////////
 		Map<String, String>	IDsAndAccess = new HashMap<String, String>();
-		for (IStudent student : courseStudents) {
+		for (Student student : courseStudents) {
 			IDsAndAccess.put(student.getFacebookID(), student.getAccessToken());
 		}
 		try {
