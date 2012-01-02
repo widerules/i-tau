@@ -19,8 +19,8 @@ import javax.servlet.http.HttpSession;
 
 
 import com.google.unizone.client.SessionManager;
-import com.google.unizone.server.Course_DB;
-import com.google.unizone.server.IStudent;
+import com.google.unizone.server.DB_Logic;
+import com.google.unizone.server.Student;
 
 import com.restfb.types.OAuth;
 import com.restfb.types.User;
@@ -106,8 +106,15 @@ public class ExtendedFaceBookClient extends DefaultFacebookClient {
 		catch(FacebookException e) {}
 
 	}
+	
+	public void setAccessToken(String accessToken){
+		this.accessToken = accessToken;
+	}
+	
 
-	public List<IStudent> parseFriends () {
+	
+
+	public List<Student> parseFriends () {
 		//Pattern friendUID = Pattern.compile("{\"uid2\":\"(\\d*)\"}" );
 		Pattern friendUID = Pattern.compile(":\"(.*)\"}" );
 		Matcher matcher;
@@ -115,8 +122,8 @@ public class ExtendedFaceBookClient extends DefaultFacebookClient {
 		String temp = null;
 		List<String> query = new ArrayList<String>();
 		List<String> myFriends = new ArrayList<String>();
-		List<IStudent> appFriends = new ArrayList<IStudent>(); 
-		Set<IStudent> allStudents = new HashSet<IStudent>(); 
+		List<Student> appFriends = new ArrayList<Student>(); 
+		List<Student> allStudents;
 		try{
 			String fqlFriends = "SELECT uid2 FROM friend WHERE uid1 = me()";
 			query = fbclient.executeQuery(fqlFriends, String.class);
@@ -134,8 +141,8 @@ public class ExtendedFaceBookClient extends DefaultFacebookClient {
 			temp += string + "\n";
 		};
 		temp+= "\n";
-		 allStudents = Course_DB.getAllStudents();
-		 for (IStudent iStudent : allStudents) {
+		 allStudents = DB_Logic.getAllStudents();
+		 for (Student iStudent : allStudents) {
 			temp += iStudent.getFacebookID() + "\n";
 			 uid = iStudent.getFacebookID();
 			
@@ -148,14 +155,68 @@ public class ExtendedFaceBookClient extends DefaultFacebookClient {
 		return appFriends;
 	}
 	
+	
+	
+	
+	
 	public String appFriendsToString(){
-		List<IStudent> appFriends = parseFriends();
+		List<Student> appFriends = parseFriends();
 		String output = "";
-		for (IStudent iStudent : appFriends) {
-			output += iStudent.toString(false) + "<br>";
+		for (Student iStudent : appFriends) {
+			output += "<div id=\"line\">" + iStudent.toString(false) + "</div>";
 		}
 		return output;
 	}
+	
+	
+	
+	public List<String> getMutualFriends(Student student){
+		
+		FacebookClient fbclient = new DefaultFacebookClient(this.accessToken); //AAADu2olM2swBADtIAeQqZB8tTZAxVHwtxabX95UM63xP65JabfTdOtAzstSt2AoHTOkGEQm6JxcdkJC8gqErWReIDbZBAax4JgpUT9FDXVhXXr242fN
+		List<String> mutualFriends = new ArrayList<String>();
+		
+		User u;
+		String fqlMututal = "SELECT uid, name, pic_square FROM user where uid IN (SELECT uid1 FROM friend WHERE uid2=" + student.getFacebookID() + " AND uid1 IN (SELECT uid2 FROM friend WHERE uid1=me()))";
+		//String fqlMututal  = "SELECT uid, name, pic_square FROM user WHERE uid IN (SELECT uid2 FROM friend WHERE uid1 = me()) AND uid IN (SELECT uid2 FROM friend WHERE uid1 =" + student.getFacebookID() + ")";
+		try{
+			u = fbclient.fetchObject("me", User.class);
+			if(u == null)
+				return null;
+			    
+		//	String fqlMututal  = "SELECT pic_square From user WHERE uid = me()";
+			mutualFriends = fbclient.executeQuery(fqlMututal, String.class);
+		}
+		catch (FacebookException e){
+			return null;
+		}
+		
+		return mutualFriends;
+	}
+	
+	public String getMyPic (){
+		Pattern pa = Pattern.compile("profile.*jpg");
+		Matcher match;
+		FacebookClient fbclient = new DefaultFacebookClient(this.getAccessToken());
+		List<String> myPic = new ArrayList<String>();
+		
+		User u;
+		String output = "";
+		try{
+			u = fbclient.fetchObject("me", User.class);
+			String fqlPic = "SELECT pic_square From user WHERE uid = me()";
+			myPic = fbclient.executeQuery(fqlPic, String.class);
+		}
+		catch (FacebookException e){
+			return null;
+		}
+		output =  myPic.get(0);
+		match = pa.matcher(output);
+		match.find();
+		return "http://" + match.group();
+	}
+	
+	
+	
 	
 	public List<String> getMyData () {
 		Pattern name = Pattern.compile("name\":\"(.*)\",");
@@ -182,6 +243,8 @@ public class ExtendedFaceBookClient extends DefaultFacebookClient {
 			return query;
 		}
 		
+	
+		
 		
 		output =  myData.get(0);
 		matcher = pa.matcher(output);
@@ -202,6 +265,8 @@ public class ExtendedFaceBookClient extends DefaultFacebookClient {
 		return query;
 		
 	}
+	
+	
 	
 	
 	
@@ -310,7 +375,7 @@ public class ExtendedFaceBookClient extends DefaultFacebookClient {
 				String redirect_uri = session.getRequest().getRequestURL() + "?" + session.getRequest().getQueryString();
 
 				//Get url to redirect user to
-				String url = getCanvasAuthorizeURL(redirect_uri, scope);	  
+				String url = getCanvasAuthorizeURL(redirect_uri);	  
 
 				try {
 					session.getResponse().sendRedirect(url);
@@ -456,7 +521,7 @@ public class ExtendedFaceBookClient extends DefaultFacebookClient {
 	 * @param scope The permissions to request from User
 	 * 
 	 */
-	public String getCanvasAuthorizeURL(String redirect_url, Parameter scope){
+	public String getCanvasAuthorizeURL(String redirect_url){
 
 		StringBuilder url = new StringBuilder();
 
@@ -466,7 +531,7 @@ public class ExtendedFaceBookClient extends DefaultFacebookClient {
 		url.append("https://www.facebook.com/dialog/oauth?");
 		url.append("client_id=" + this.APP_ID);
 		url.append("&redirect_uri=" + StringUtils.urlEncode(redirect_url));
-		url.append("&scope=" + scope.value);
+		url.append("&scope=" + "email");
 
 		return url.toString();
 

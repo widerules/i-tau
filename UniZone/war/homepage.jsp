@@ -3,18 +3,37 @@
 <%@ page import="com.google.unizone.client.SessionManager" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="com.google.unizone.server.Course_DB" %>
+<%@ page import="com.google.unizone.server.DB_Logic" %>
 <%@ page import="com.google.unizone.server.IShiur" %>
 <%@ page import="com.google.unizone.server.*" %>
 
 
 <!doctype html>
-<html xmlns="http://www.w3.org/1999/xhtml" style="overflow: hidden">
+<html xmlns="http://www.w3.org/1999/xhtml" >
   <head>
+
+
+  <script language="JavaScript" type="text/javascript">
+<!-- Copyright 2005, Sandeep Gangadharan -->
+<!-- For more free scripts go to http://www.sivamdesign.com/scripts/ -->
+<!--
+if (document.getElementById) {
+document.writeln('<style type="text/css"><!--')
+document.writeln('.texter {display:none} @media print {.texter {display:block;}}')
+document.writeln('//--></style>') }
+
+function openClose(theID) {
+if (document.getElementById(theID).style.display == "block") { document.getElementById(theID).style.display = "none" }
+else { document.getElementById(theID).style.display = "block" } }
+// -->
+</script>
+
+
+  
+  
   
   <script type="text/javascript" src="jquery-1.2.2.pack.js"></script>
-
-<style type="text/css">
+  <style type="text/css">
 
 div.htmltooltip{
 position: absolute; /*leave this and next 3 values alone*/
@@ -29,6 +48,7 @@ width: 250px; /*width of tooltip*/
 }
 
 </style>
+  
 
 <script type="text/javascript" src="htmltooltip.js">
 
@@ -37,6 +57,10 @@ width: 250px; /*width of tooltip*/
 * This notice must stay intact for usage
 * Visit JavaScript Kit at http://www.javascriptkit.com/ for this script and 100s more
 ***********************************************/
+
+
+
+
 
 </script>
 
@@ -47,81 +71,94 @@ width: 250px; /*width of tooltip*/
   
   
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-
-    <script type="text/javascript" language="javascript" src="itauapp6/itauapp6.nocache.js"></script>
   <link type="text/css" rel="stylesheet" href="style.css">
   </head>
-  <body style="overflow: hidden">
-  
-	
-		    
-    
-    
+	<div id = allWhiteBox>
+
+
+	<script type="text/javascript">
+function toggleMe(a){
+var e=document.getElementById(a);
+if(!e)return true;
+if(e.style.display=="none"){
+e.style.display="block"
+}
+else{
+e.style.display="none"
+}
+return true;
+}
+</script>
+
     <%
-  	
-  		SessionManager httpSession = new SessionManager(request, response);
+ 		SessionManager httpSession = new SessionManager(request, response);
   		
   		String APP_ID = System.getProperty("APP_ID");
   		String APP_SECRET = System.getProperty("APP_SECRET_CODE");
   		String CANVAS_APP_URL = System.getProperty("CANVAS_APP_URL");
   		String code = request.getParameter("code");
   		ExtendedFaceBookClient fbclient = new ExtendedFaceBookClient(APP_ID, APP_SECRET);
-  		//fbclient.Canvas.setAutoResize(100);
   		List<String> myData;
-  		String name, id, pic, appFriends;
+  		String name, FBid, pic, appFriends;
   		fbclient.readAccessToken(code, CANVAS_APP_URL + "homepage.jsp");
 		myData = fbclient.getMyData();
-		name = myData.get(1);
-		id = myData.get(2);
-		pic = myData.get(0);
-		Course_DB.startSimulation();
-		appFriends = fbclient.appFriendsToString();
 		
-  	%>
-  	
- 
- <!--//create student, save username, pic url
- //move to schedule fill in page
- //save schedule in student field-->
-  
- 	<%
- 		if(Course_DB.checkIfStudentExist(myData.get(2)))
+		name = myData.get(1);
+		FBid = myData.get(2);
+		pic = myData.get(0);
+		//DB_Logic.startSimulation();
+		
+ 		String course;
+ 		List<Course> courses;
+ 		String url = CANVAS_APP_URL + "register.jsp?FBid="+FBid;
+ 		Student student = DB_Logic.getStudent(FBid);
+ 		
+ 		if (student == null)
+ 		{%>
+ 				<script type="text/javascript">
+           			top.location = "<%=url%>";
+  				</script>
+		<%}
+ 		else
  		{
- 			IStudent student = Course_DB.getStudent(myData.get(2));
+ 			appFriends = fbclient.appFriendsToString();
  			student.setPic(pic);
  			student.setName(name);
- 			String course;
- 			String Schedule = Course_DB.scheduleToString(student);
- 			List<ICourse> courses = Course_DB.getStudentCourses(student);
+ 			student.setFBFriends(Utils.FBFriendsToSet(fbclient.parseFriends()));
+ 			student.setAccessToken(fbclient.getAccessToken());
+ 			DB_Logic.updateStudent(student);
+ 			courses = DB_Logic.getStudentCourses(student);
  			%>
- 			<p><%= student.toString(true) %></p>
+ 			
+ 			<%=Utils.appToString("homepage")%>
+ 			<div id= "headline"><p><%= student.toString(true) %></p></div>
+ 			
+ 			 				 			
+ 			<p>
+ 				<div onClick="openClose('a2')" style="cursor:hand; cursor:pointer"><h3 id="sub_header">Available Friends</h3></div>
+				<div id="a2" class="texter"> 				
+ 				<%= appFriends %>
+				</div>
+ 			</p>
  			
  			<p>
- 				<h3 id="sub_header">Courses Groups</h3>
+
+ 				<div onClick="openClose('a1')" value="open" style="cursor:hand; cursor:pointer"><h3 id="sub_header">Courses Groups</h3></div>
+	 			<div id="a1" class="texter";>
 	 			<%
-	 			for (ICourse iCourse : courses) { 
-					course = iCourse.toString(false);
+	 
+	 			for (Course c : courses) { 
+					course = c.toString(myData.get(2),false);
 				%>
-					<br><br><%=course %>
+					<div id="line"><%=course %></div>
 				<% 
 				}
 				%>
- 			</p>
- 			
- 			<p>
- 				<h3 id="sub_header">Available Friends</h3>
- 				<%= appFriends %>
+				</div>
  			</p>
  			
  		<%
- 		}
- 		else
- 		{
- 		%>
- 			<p>You are not registered. Redirecting...</p>
-<%
-		}
- %>
- 		
+ 		}%>
+ 		</div>
 	</body>
 </html>

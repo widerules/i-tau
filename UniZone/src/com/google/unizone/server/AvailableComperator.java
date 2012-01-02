@@ -20,7 +20,7 @@ public class AvailableComperator implements Comparator<Available> {
 		return 0;
 	}
 	
-	public boolean equals(ILesson lesson) {
+	public boolean equals(Lesson lesson) {
 		return false;
 	}
 

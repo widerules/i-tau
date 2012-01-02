@@ -9,10 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.unizone.server.DB_Logic;
-import com.google.unizone.server.ICourse;
+import com.google.unizone.server.Course;
 import com.google.unizone.server.IShiur;
 import com.google.unizone.server.ITest;
-import com.google.unizone.server.IStudent;
+import com.google.unizone.server.Student;
 import com.google.unizone.server.MyTest;
 import com.google.unizone.server.ShiurComparator;
 
@@ -31,8 +31,8 @@ public class HomePageServlet extends HttpServlet{
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) {
 		String facebookID = request.getParameter("facebookID");
-		IStudent student = DB_Logic.getStudent(facebookID);
-		List<ICourse> courseList = DB_Logic.getStudentCourses(student);
+		Student student = DB_Logic.getStudent(facebookID);
+		List<Course> courseList = DB_Logic.getStudentCourses(student);
 		response.setContentType("application/json");
 		try {
 			ServletUtils.writeToResponseAsJson(response, courseList);

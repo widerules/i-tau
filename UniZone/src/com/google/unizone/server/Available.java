@@ -2,11 +2,11 @@ package com.google.unizone.server;
 
 public class Available {
 
-	IStudent student;
-	public IStudent getStudent() {
+	Student student;
+	public Student getStudent() {
 		return student;
 	}
-	public void setStudent(IStudent student) {
+	public void setStudent(Student student) {
 		this.student = student;
 	}
 	public int getBeginTm() {
@@ -29,7 +29,7 @@ public class Available {
 	}
 	int beginTm, endTm;
 	String message;
-	public Available(IStudent student,int beginTm,int endTm,String message){
+	public Available(Student student,int beginTm,int endTm,String message){
 		this.student=student;
 		this.beginTm=beginTm;
 		this.endTm=endTm;
